@@ -6,7 +6,7 @@ import pydantic
 import pymongo
 from beanie import PydanticObjectId
 
-from models.release import Release
+from models.db.release import Release
 
 
 class Package(beanie.Document):
@@ -32,7 +32,6 @@ class Package(beanie.Document):
     class Collection:
         name = "packages"
         indexes = [
-            # pymongo.IndexModel(keys=[("package_id", pymongo.ASCENDING)], name="package_id_ascend"),
             pymongo.IndexModel(keys=[("created_date", pymongo.DESCENDING)], name="created_date_descend"),
             pymongo.IndexModel(keys=[("last_updated", pymongo.DESCENDING)], name="last_updated_descend"),
             pymongo.IndexModel(keys=[("author_email", pymongo.ASCENDING)], name="author_email_ascending"),

@@ -1,4 +1,4 @@
-from models.user import User
+from models.db.user import User
 
 
 async def user_count() -> int:

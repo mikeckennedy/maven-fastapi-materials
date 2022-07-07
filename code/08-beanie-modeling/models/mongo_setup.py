@@ -4,7 +4,7 @@ from typing import Optional
 import beanie
 import motor.motor_asyncio
 
-from models import core_models
+from models.db import core_models
 
 
 async def global_init(database: str, server: Optional[str] = 'localhost',

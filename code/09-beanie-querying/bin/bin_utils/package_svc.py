@@ -1,5 +1,5 @@
-from models.package import Package
-from models.release_analytics import ReleaseAnalytics
+from models.db.package import Package
+from models.db.release_analytics import ReleaseAnalytics
 
 
 async def release_count() -> int:

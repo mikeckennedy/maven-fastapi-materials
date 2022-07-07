@@ -9,8 +9,8 @@ python-dateutil
 beanie
 starlette
 passlib
-# fastapi
-# uvicorn
-# jinja2
+fastapi
+uvicorn
+jinja2
 # email-validator
-# locust
+locust

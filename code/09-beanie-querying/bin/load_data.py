@@ -10,10 +10,10 @@ import progressbar
 from dateutil.parser import parse
 
 from bin.bin_utils import package_svc, user_svc
-from models import mongo_setup
-from models.package import Package
-from models.release import Release
-from models.user import User
+from models.db import mongo_setup
+from models.db.package import Package
+from models.db.release import Release
+from models.db.user import User
 
 sys.path.insert(0, os.path.abspath(os.path.join(
     os.path.dirname(__file__), "..")))

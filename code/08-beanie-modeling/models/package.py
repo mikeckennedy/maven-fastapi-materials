@@ -6,7 +6,7 @@ import pydantic
 import pymongo
 from beanie import PydanticObjectId
 
-from models.release import Release
+from models.db.release import Release
 
 
 class Package(beanie.Document):
