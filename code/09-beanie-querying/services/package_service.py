@@ -20,9 +20,9 @@ async def package_count() -> int:
 
 async def latest_packages(limit: int = 5, project=False) -> List[Package | PackageTopLevelOnlyView]:
     if not project:
-        return await Package.find().sort('last_updated').limit(limit).to_list()
+        return await Package.find().sort('-last_updated').limit(limit).to_list()
     else:
-        return await Package.find().sort('last_updated').limit(limit).project(PackageTopLevelOnlyView).to_list()
+        return await Package.find().sort('-last_updated').limit(limit).project(PackageTopLevelOnlyView).to_list()
 
 
 async def get_package_by_id(package_name: str) -> Optional[Package]:
@@ -39,6 +39,6 @@ def get_latest_release_for_package(package: Package) -> Optional[Release]:
     if not package or not package.releases:
         return None
 
-    package.releases.sort(key=lambda r: (r.major_ver, r.minor_ver, r.build_ver))
-    latest = package.releases[-1]
+    releases = sorted(package.releases, key=lambda r: (r.major_ver, r.minor_ver, r.build_ver))
+    latest = releases[-1]
     return latest

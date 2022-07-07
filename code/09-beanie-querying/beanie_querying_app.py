@@ -1,5 +1,7 @@
 import asyncio
 
+import pymongo.errors
+
 from models import mongo_setup
 from models.release import Release
 from services import user_service, package_service
@@ -7,6 +9,7 @@ from services import user_service, package_service
 
 async def main():
     await mongo_setup.global_init(database='pypi')
+    p = await package_service.get_package_by_id('requests')
 
     print("--------------------------")
     print(" PyPI CLI ")
@@ -32,11 +35,17 @@ async def main():
     print(f"We have {await user_service.user_count():,} users.")
 
     print("Let's create one more:")
-    name = input("What's there name? ").strip()
-    email = name.replace(' ', '-') + '@gmail.com'
-    await user_service.create_account(name, email, "a")
-    print(f"Now there are {user_service.user_count():,} users.")
-    user = user_service.get_user_by_email(email)
+    while True:
+        try:
+            name = input("What's there name? ").strip()
+            email = name.replace(' ', '-') + '@gmail.com'
+            await user_service.create_account(name, email, "a")
+            break
+        except pymongo.errors.DuplicateKeyError:
+            print("Oops, we already have a user with that name, try another.")
+
+    print(f"Now there are {await user_service.user_count():,} users.")
+    user = await user_service.get_user_by_email(email)
     print(f"We added {user}!")
 
 

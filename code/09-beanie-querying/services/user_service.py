@@ -11,7 +11,7 @@ async def user_count() -> int:
 
 
 async def create_account(name: str, email: str, password: str) -> User:
-    user = User(email=email, name=name)
+    user = User(email=email.strip().lower(), name=name.strip())
     user.hash_password = crypto.hash(password, rounds=172_434)
 
     await user.save()
@@ -37,4 +37,8 @@ async def get_user_by_id(user_id: bson.ObjectId) -> Optional[User]:
 
 
 async def get_user_by_email(email: str) -> Optional[User]:
+    if not email:
+        return None
+
+    email = email.lower().strip()
     return await User.find_one(User.email == email)

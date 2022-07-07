@@ -1,3 +1,4 @@
+import asyncio
 import json
 import os
 import sys
@@ -9,7 +10,6 @@ import progressbar
 from dateutil.parser import parse
 
 from bin.bin_utils import package_svc, user_svc
-from infrastructure import syncify
 from models import mongo_setup
 from models.package import Package
 from models.release import Release
@@ -20,7 +20,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(
 
 
 async def main():
-    await mongo_setup.global_init()
+    await mongo_setup.global_init(database='pypi')
     await User.delete_all()
     await Package.delete_all()
     await package_svc.reset_release_count()
@@ -77,7 +77,8 @@ async def do_import_packages(file_data: List[dict]):
 
 
 def do_load_files() -> List[dict]:
-    data_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../data/pypi-top-5k'))
+    # data_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../data/pypi-top-5k'))
+    data_path = '/Users/michaelkennedy/Desktop/pypi-raw-data/pypi-top-5k'
     print("Loading files from {}".format(data_path))
     files = get_file_names(data_path)
     print("Found {:,} files, loading ...".format(len(files)), flush=True)
@@ -168,6 +169,7 @@ async def load_package(data: dict):
 
         if releases:
             p.created_date = releases[0].created_date
+            p.last_updated = releases[-1].created_date
 
         p.releases.extend(releases)
         p.home_page = info.get('home_page')
@@ -224,14 +226,15 @@ def build_releases(releases: dict) -> List[Release]:
 
         major_ver, minor_ver, build_ver = make_version_num(k)
 
-        r = Release(major_ver=major_ver, minor_ver=minor_ver, build_ver=build_ver)
-        # r.package_id = package_id
-        r.created_date = parse(v.get('upload_time'))
-        r.comment = v.get('comment_text')
-        r.url = v.get('url')
-        r.size = int(v.get('size', 0))
+        release = Release(major_ver=major_ver, minor_ver=minor_ver, build_ver=build_ver)
+        release.created_date = parse(v.get('upload_time'))
+        release.comment = v.get('comment_text')
+        release.url = v.get('url')
+        release.size = int(v.get('size', 0))
 
-        db_releases.append(r)
+        db_releases.append(release)
+
+    db_releases.sort(key=lambda r: (r.major_ver, r.minor_ver, r.build_ver))
 
     return db_releases
 
@@ -274,4 +277,4 @@ def get_file_names(data_path: str) -> List[str]:
 
 
 if __name__ == '__main__':
-    syncify.run(main())
+    asyncio.run(main())
