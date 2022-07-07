@@ -12,7 +12,7 @@ api.mount("/static", StaticFiles(directory="static"), name="static")
 
 
 def main():
-    print('Setting up FastAPI app (starter)')
+    print('Setting up FastAPI app (accepting data)')
 
     init_routes()
 
@@ -34,3 +34,5 @@ def init_routes():
 
 if __name__ == '__main__':
     main()
+else:
+    init_routes()
