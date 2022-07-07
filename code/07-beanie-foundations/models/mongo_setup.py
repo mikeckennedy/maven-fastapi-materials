@@ -7,11 +7,13 @@ import motor.motor_asyncio
 from models import core_models
 
 
-async def global_init(server='localhost', port=27017, username=None, password=None, use_ssl=False):
+async def global_init(database: str, server: Optional[str] = 'localhost',
+                      port: int = 27017, username: Optional[str] = None, password: Optional[str] = None,
+                      use_ssl: bool = False):
     server = server or 'localhost'
     port = port or 27017
 
-    await _motor_init(db='pypi', password=password, port=port, server=server,
+    await _motor_init(db=database, password=password, port=port, server=server,
                       use_ssl=use_ssl, username=username, models=core_models.all_db_models)
 
 

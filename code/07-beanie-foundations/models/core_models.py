@@ -1,9 +1,5 @@
-from models.package import Package
-from models.release_analytics import ReleaseAnalytics
-from models.user import User
+from models.blank_model import Blank
 
 all_db_models = [
-    Package,
-    User,
-    ReleaseAnalytics,
+    Blank,
 ]
