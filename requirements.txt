@@ -41,6 +41,8 @@ motor==3.0.0
     # via beanie
 multidict==6.0.2
     # via yarl
+passlib==1.7.4
+    # via -r requirements.in
 progressbar2==4.0.0
     # via -r requirements.in
 pydantic==1.9.1
@@ -72,7 +74,7 @@ toml==0.10.2
     # via beanie
 typing-extensions==4.3.0
     # via pydantic
-urllib3==1.26.9
+urllib3==1.26.10
     # via requests
 uvloop==0.16.0
     # via -r requirements.in
