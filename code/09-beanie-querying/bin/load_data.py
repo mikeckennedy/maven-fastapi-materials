@@ -20,13 +20,21 @@ sys.path.insert(0, os.path.abspath(os.path.join(
 
 
 async def main():
+    print("Importing PYPI data.")
+    print()
+    print("Make sure you have downloaded and unzipped the pypi data set from:")
+    print("https://michael-kennedy.s3.amazonaws.com/datasets/pypi/pypi-raw-data.zip")
+    print()
+    print("Enter the data folder path, e.g. '/Users/mk/Desktop/pypi-raw-data/pypi-top-5k'")
+    data_folder = input("Data folder path: ").strip()
+
     await mongo_setup.global_init(database='pypi')
     await User.delete_all()
     await Package.delete_all()
     await package_svc.reset_release_count()
     user_count = await user_svc.user_count()
     if user_count == 0:
-        file_data = do_load_files()
+        file_data = do_load_files(data_folder)
         users = find_users(file_data)
 
         await do_user_import(users)
@@ -76,11 +84,9 @@ async def do_import_packages(file_data: List[dict]):
         print(txt)
 
 
-def do_load_files() -> List[dict]:
-    # data_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../data/pypi-top-5k'))
-    data_path = '/Users/michaelkennedy/Desktop/pypi-raw-data/pypi-top-5k'
-    print("Loading files from {}".format(data_path))
-    files = get_file_names(data_path)
+def do_load_files(data_folder: str) -> List[dict]:
+    print("Loading files from {}".format(data_folder))
+    files = get_file_names(data_folder)
     print("Found {:,} files, loading ...".format(len(files)), flush=True)
     time.sleep(.1)
 
