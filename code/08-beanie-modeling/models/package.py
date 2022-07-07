@@ -2,7 +2,6 @@ import datetime
 from typing import Optional
 
 import beanie
-import bson
 import pydantic
 import pymongo
 from beanie import PydanticObjectId
@@ -56,13 +55,3 @@ class Package(beanie.Document):
     def __repr__(self):
         return f'<Package {self.id} ({len(self.releases):} releases)>'
 
-
-class PackageTopLevelOnlyView(pydantic.BaseModel):
-    id: Optional[str]
-    summary: str
-
-    class Settings:
-        projection = {
-            "id": "$_id",
-            "summary": "$summary"
-        }

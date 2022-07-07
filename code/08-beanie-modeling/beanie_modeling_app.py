@@ -4,7 +4,7 @@ from models import mongo_setup
 
 
 async def main():
-    await mongo_setup.global_init()
+    await mongo_setup.global_init(database='pypi')
 
 
 if __name__ == '__main__':

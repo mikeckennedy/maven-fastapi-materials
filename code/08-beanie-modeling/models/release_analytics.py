@@ -7,3 +7,4 @@ class ReleaseAnalytics(beanie.Document):
     class Collection:
         name = "release_analytics"
         indexes = []
+zw
