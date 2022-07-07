@@ -3,16 +3,13 @@ pydantic
 colorama
 bs4
 httpx
-# uvloop
-# switchlang
-# sqlalchemy
-# progressbar2
-# python-dateutil
-# aiosqlite
+uvloop
+progressbar2
+python-dateutil
+beanie
+starlette
 # fastapi
 # uvicorn
 # jinja2
 # email-validator
-# psycopg2
-# asyncpg
 # locust
